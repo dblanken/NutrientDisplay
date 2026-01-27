@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- Uses VINTAGE_STORY environment variable if set, otherwise defaults to flatpak location -->
+    <VINTAGE_STORY Condition="'$(VINTAGE_STORY)' == ''">$(HOME)/.local/share/flatpak/app/at.vintagestory.VintageStory/current/active/files/extra/vintagestory</VINTAGE_STORY>
+  </PropertyGroup>
+</Project>
