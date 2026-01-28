@@ -1,5 +1,6 @@
 {
     "type": "code",
+    "side": "client",
     "modid": "nutrientdisplay",
     "name": "Nutrient Display",
     "description": "Displays nutrient letters (N, P, K) on seeds when held in hand",
