@@ -58,12 +58,19 @@ public static class SeedNamePatch
         if (__instance?.Collectible is not ItemPlantableSeed) return;
 
         var itemCode = __instance.Collectible.Code?.ToString() ?? "";
+        __result = AppendNutrient(__result, itemCode);
+    }
+
+    public static string AppendNutrient(string name, string itemCode)
+    {
         if (NutrientDisplayModSystem.CropNutrientCache.TryGetValue(itemCode, out var nutrient))
         {
-            if (!__result.Contains($"({nutrient})"))
+            if (!name.Contains($"({nutrient})"))
             {
-                __result = $"{__result} ({nutrient})";
+                return $"{name} ({nutrient})";
             }
         }
+
+        return name;
     }
 }

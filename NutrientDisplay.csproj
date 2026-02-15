@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NutrientDisplay.Tests/**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>$(VINTAGE_STORY)/Lib/0Harmony.dll</HintPath>
       <Private>false</Private>
