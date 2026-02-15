@@ -10,7 +10,8 @@ VERSION=$(grep -oP '"version":\s*"\K[^"]+' modinfo.json)
 dotnet build -c Release
 
 # Create the mod zip
-rm -f "${MOD_ID}_v${VERSION}.zip"
-zip -j "${MOD_ID}_v${VERSION}.zip" modinfo.json bin/Release/NutrientDisplay.dll
+mkdir -p Releases
+rm -f "Releases/${MOD_ID}_v${VERSION}.zip"
+zip -j "Releases/${MOD_ID}_v${VERSION}.zip" modinfo.json bin/Release/NutrientDisplay.dll
 
-echo "Created ${MOD_ID}_v${VERSION}.zip"
+echo "Created Releases/${MOD_ID}_v${VERSION}.zip"
