@@ -10,6 +10,9 @@ permissions:
 
 env:
   VS_VERSION: 1.22.7
+  # Vintage Story doesn't publish official checksums; pinned on first use
+  # from cdn.vintagestory.at. Recompute (sha256sum) when bumping VS_VERSION.
+  VS_SERVER_SHA256: a7d4a520604590a96de812ee6c6baf4404d43d86cf1ec4fbac1b3a580b52c847
 
 jobs:
   build-and-release:
@@ -23,8 +26,9 @@ jobs:
 
       - name: Download Vintage Story server (for API DLLs)
         run: |
-          curl -sL -o vs_server.tar.gz \
+          curl -fsSL -o vs_server.tar.gz \
             "https://cdn.vintagestory.at/gamefiles/stable/vs_server_linux-x64_${VS_VERSION}.tar.gz"
+          echo "${VS_SERVER_SHA256}  vs_server.tar.gz" | sha256sum -c -
           mkdir -p "$HOME/vintagestory"
           tar -xzf vs_server.tar.gz -C "$HOME/vintagestory"
           echo "VINTAGE_STORY=$HOME/vintagestory" >> "$GITHUB_ENV"
