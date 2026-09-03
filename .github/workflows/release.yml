@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+env:
+  VS_VERSION: 1.22.7
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Download Vintage Story server (for API DLLs)
+        run: |
+          curl -sL -o vs_server.tar.gz \
+            "https://cdn.vintagestory.at/gamefiles/stable/vs_server_linux-x64_${VS_VERSION}.tar.gz"
+          mkdir -p "$HOME/vintagestory"
+          tar -xzf vs_server.tar.gz -C "$HOME/vintagestory"
+          echo "VINTAGE_STORY=$HOME/vintagestory" >> "$GITHUB_ENV"
+
+      - name: Test
+        run: dotnet test -c Release
+
+      - name: Build release zip
+        run: ./build.sh
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          VERSION=$(grep -oP '"version":\s*"\K[^"]+' modinfo.json)
+          gh release create "$TAG" \
+            "Releases/nutrientdisplay_v${VERSION}.zip" \
+            --title "$TAG" \
+            --generate-notes
